@@ -7,6 +7,7 @@ cmake_minimum_required(VERSION 3.14)
 # Project-level configuration.
 set(PROJECT_NAME "windows_store")
 project(${PROJECT_NAME} LANGUAGES CXX)
+include(FetchContent)
 
 # Explicitly opt in to modern CMake behaviors to avoid warnings with recent
 # versions of CMake.
@@ -15,6 +16,26 @@ cmake_policy(VERSION 3.14...3.25)
 # This value is used when generating builds using this plugin, so it must
 # not be changed
 set(PLUGIN_NAME "windows_store_plugin")
+
+################ NuGet intall begin ################
+FetchContent_Declare(nuget
+  URL "https://dist.nuget.org/win-x86-commandline/v6.7.0/nuget.exe"
+  URL_HASH SHA256=1a98b29bcc3aea4ba8ca66d35523f8e90cb28e54588f9c13589c50af5d8623c9
+  DOWNLOAD_NO_EXTRACT true
+)
+
+find_program(NUGET nuget)
+if (NOT NUGET)
+    message("Nuget.exe not found, trying to download or use cached version.")
+    FetchContent_MakeAvailable(nuget)
+    set(NUGET ${nuget_SOURCE_DIR}/nuget.exe)
+endif()
+
+exec_program(${NUGET}
+    ARGS install "Microsoft.Windows.CppWinRT" -Version 2.0.230706.1 -ExcludeVersion -OutputDirectory ${CMAKE_BINARY_DIR}/packages)
+# exec_program(${NUGET}
+#     ARGS install "Microsoft.Toolkit.Uwp.Notifications" -Version 7.1.3 -ExcludeVersion -OutputDirectory ${CMAKE_BINARY_DIR}/packages)
+################ NuGet install end ################
 
 # Any new source files that you add to the plugin should be added here.
 list(APPEND PLUGIN_SOURCES
@@ -41,6 +62,18 @@ apply_standard_settings(${PLUGIN_NAME})
 set_target_properties(${PLUGIN_NAME} PROPERTIES
   CXX_VISIBILITY_PRESET hidden)
 target_compile_definitions(${PLUGIN_NAME} PRIVATE FLUTTER_PLUGIN_IMPL)
+
+
+################ NuGet import begin ################
+set_target_properties(${PLUGIN_NAME} PROPERTIES VS_PROJECT_IMPORT
+  ${CMAKE_BINARY_DIR}/packages/Microsoft.Windows.CppWinRT/build/native/Microsoft.Windows.CppWinRT.props
+)
+
+target_link_libraries(${PLUGIN_NAME} PRIVATE
+  ${CMAKE_BINARY_DIR}/packages/Microsoft.Windows.CppWinRT/build/native/Microsoft.Windows.CppWinRT.targets
+)
+################ NuGet import end ################
+
 
 # Source include directories and library dependencies. Add any plugin-specific
 # dependencies here.
