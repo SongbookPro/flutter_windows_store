@@ -5,8 +5,9 @@
 #include "windows_store_plugin.h"
 
 void WindowsStorePluginCApiRegisterWithRegistrar(
-    FlutterDesktopPluginRegistrarRef registrar) {
-  windows_store::WindowsStorePlugin::RegisterWithRegistrar(
-      flutter::PluginRegistrarManager::GetInstance()
-          ->GetRegistrar<flutter::PluginRegistrarWindows>(registrar));
+    FlutterDesktopPluginRegistrarRef registrar)
+{
+    windows_store::WindowsStorePlugin::RegisterWithRegistrar(
+        flutter::PluginRegistrarManager::GetInstance()
+            ->GetRegistrar<flutter::PluginRegistrarWindows>(registrar));
 }

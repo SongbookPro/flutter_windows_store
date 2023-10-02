@@ -39,6 +39,8 @@ exec_program(${NUGET}
 
 # Any new source files that you add to the plugin should be added here.
 list(APPEND PLUGIN_SOURCES
+  "pigeon/messages.g.cpp"
+  "pigeon/messages.g.h"
   "windows_store_plugin.cpp"
   "windows_store_plugin.h"
 )
@@ -114,7 +116,6 @@ FetchContent_MakeAvailable(googletest)
 # The plugin's C API is not very useful for unit testing, so build the sources
 # directly into the test binary rather than using the DLL.
 add_executable(${TEST_RUNNER}
-  test/windows_store_plugin_test.cpp
   ${PLUGIN_SOURCES}
 )
 apply_standard_settings(${TEST_RUNNER})

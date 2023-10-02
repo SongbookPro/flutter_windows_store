@@ -6,26 +6,15 @@
 
 #include <memory>
 
-namespace windows_store {
+namespace windows_store
+{
 
-class WindowsStorePlugin : public flutter::Plugin {
- public:
-  static void RegisterWithRegistrar(flutter::PluginRegistrarWindows *registrar);
+    class WindowsStorePlugin
+    {
+    public:
+        static void RegisterWithRegistrar(flutter::PluginRegistrarWindows *registrar);
+    };
 
-  WindowsStorePlugin();
+} // namespace windows_store
 
-  virtual ~WindowsStorePlugin();
-
-  // Disallow copy and assign.
-  WindowsStorePlugin(const WindowsStorePlugin&) = delete;
-  WindowsStorePlugin& operator=(const WindowsStorePlugin&) = delete;
-
-  // Called when a method is called on this plugin's channel from Dart.
-  void HandleMethodCall(
-      const flutter::MethodCall<flutter::EncodableValue> &method_call,
-      std::unique_ptr<flutter::MethodResult<flutter::EncodableValue>> result);
-};
-
-}  // namespace windows_store
-
-#endif  // FLUTTER_PLUGIN_WINDOWS_STORE_PLUGIN_H_
+#endif // FLUTTER_PLUGIN_WINDOWS_STORE_PLUGIN_H_
