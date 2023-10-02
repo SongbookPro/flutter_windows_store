@@ -31,7 +31,7 @@ namespace windows_store
     WindowsStoreApiInstance() {}
     virtual ~WindowsStoreApiInstance() {}
 
-    void GetAppLicenseAsync(std::function<void(ErrorOr<StoreAppLicense> reply)> result)
+    void GetAppLicenseAsync(std::function<void(ErrorOr<StoreAppLicenseInner> reply)> result)
     {
       concurrency::create_task([result]
                                {
@@ -43,7 +43,7 @@ namespace windows_store
         std::string skuStoreId = winrt::to_string(license.SkuStoreId());
         std::string trialUniqueId = winrt::to_string(license.TrialUniqueId());
 
-        result(StoreAppLicense(license.IsActive(), license.IsTrial(), skuStoreId, trialUniqueId, license.TrialTimeRemaining().count()));
+        result(StoreAppLicenseInner(license.IsActive(), license.IsTrial(), skuStoreId, trialUniqueId, license.TrialTimeRemaining().count() / 10000));
 		  }  catch (winrt::hresult_error const& ex)
         {
             winrt::hresult hr = ex.code();

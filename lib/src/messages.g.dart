@@ -8,8 +8,8 @@ import 'dart:typed_data' show Float64List, Int32List, Int64List, Uint8List;
 import 'package:flutter/foundation.dart' show ReadBuffer, WriteBuffer;
 import 'package:flutter/services.dart';
 
-class StoreAppLicense {
-  StoreAppLicense({
+class StoreAppLicenseInner {
+  StoreAppLicenseInner({
     required this.isActive,
     required this.isTrial,
     required this.skuStoreId,
@@ -37,9 +37,9 @@ class StoreAppLicense {
     ];
   }
 
-  static StoreAppLicense decode(Object result) {
+  static StoreAppLicenseInner decode(Object result) {
     result as List<Object?>;
-    return StoreAppLicense(
+    return StoreAppLicenseInner(
       isActive: result[0]! as bool,
       isTrial: result[1]! as bool,
       skuStoreId: result[2]! as String,
@@ -53,7 +53,7 @@ class _WindowsStoreApiCodec extends StandardMessageCodec {
   const _WindowsStoreApiCodec();
   @override
   void writeValue(WriteBuffer buffer, Object? value) {
-    if (value is StoreAppLicense) {
+    if (value is StoreAppLicenseInner) {
       buffer.putUint8(128);
       writeValue(buffer, value.encode());
     } else {
@@ -65,7 +65,7 @@ class _WindowsStoreApiCodec extends StandardMessageCodec {
   Object? readValueOfType(int type, ReadBuffer buffer) {
     switch (type) {
       case 128: 
-        return StoreAppLicense.decode(readValue(buffer)!);
+        return StoreAppLicenseInner.decode(readValue(buffer)!);
       default:
         return super.readValueOfType(type, buffer);
     }
@@ -82,7 +82,7 @@ class WindowsStoreApi {
 
   static const MessageCodec<Object?> codec = _WindowsStoreApiCodec();
 
-  Future<StoreAppLicense> getAppLicenseAsync() async {
+  Future<StoreAppLicenseInner> getAppLicenseAsync() async {
     final BasicMessageChannel<Object?> channel = BasicMessageChannel<Object?>(
         'dev.flutter.pigeon.windows_store.WindowsStoreApi.getAppLicenseAsync', codec,
         binaryMessenger: _binaryMessenger);
@@ -105,7 +105,7 @@ class WindowsStoreApi {
         message: 'Host platform returned null value for non-null return value.',
       );
     } else {
-      return (replyList[0] as StoreAppLicense?)!;
+      return (replyList[0] as StoreAppLicenseInner?)!;
     }
   }
 }

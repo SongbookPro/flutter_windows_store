@@ -1,15 +1,3 @@
 # windows_store
 
-A new Flutter plugin project.
-
-## Getting Started
-
-This project is a starting point for a Flutter
-[plug-in package](https://flutter.dev/developing-packages/),
-a specialized package that includes platform-specific implementation code for
-Android and/or iOS.
-
-For help getting started with Flutter development, view the
-[online documentation](https://flutter.dev/docs), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
-
+A flutter plugin for getting license information from the Microsoft Store. The app needs to be packaged as a misx and associated with a published app for this to return meaningful values.

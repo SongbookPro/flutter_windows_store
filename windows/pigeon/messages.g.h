@@ -57,10 +57,10 @@ template<class T> class ErrorOr {
 
 
 // Generated class from Pigeon that represents data sent in messages.
-class StoreAppLicense {
+class StoreAppLicenseInner {
  public:
   // Constructs an object setting all fields.
-  explicit StoreAppLicense(
+  explicit StoreAppLicenseInner(
     bool is_active,
     bool is_trial,
     const std::string& sku_store_id,
@@ -84,7 +84,7 @@ class StoreAppLicense {
 
 
  private:
-  static StoreAppLicense FromEncodableList(const flutter::EncodableList& list);
+  static StoreAppLicenseInner FromEncodableList(const flutter::EncodableList& list);
   flutter::EncodableList ToEncodableList() const;
   friend class WindowsStoreApi;
   friend class WindowsStoreApiCodecSerializer;
@@ -121,7 +121,7 @@ class WindowsStoreApi {
   WindowsStoreApi(const WindowsStoreApi&) = delete;
   WindowsStoreApi& operator=(const WindowsStoreApi&) = delete;
   virtual ~WindowsStoreApi() {}
-  virtual void GetAppLicenseAsync(std::function<void(ErrorOr<StoreAppLicense> reply)> result) = 0;
+  virtual void GetAppLicenseAsync(std::function<void(ErrorOr<StoreAppLicenseInner> reply)> result) = 0;
 
   // The codec used by WindowsStoreApi.
   static const flutter::StandardMessageCodec& GetCodec();

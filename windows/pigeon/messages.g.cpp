@@ -21,9 +21,9 @@ using flutter::EncodableList;
 using flutter::EncodableMap;
 using flutter::EncodableValue;
 
-// StoreAppLicense
+// StoreAppLicenseInner
 
-StoreAppLicense::StoreAppLicense(
+StoreAppLicenseInner::StoreAppLicenseInner(
   bool is_active,
   bool is_trial,
   const std::string& sku_store_id,
@@ -35,52 +35,52 @@ StoreAppLicense::StoreAppLicense(
     trial_unique_id_(trial_unique_id),
     trial_time_remaining_(trial_time_remaining) {}
 
-bool StoreAppLicense::is_active() const {
+bool StoreAppLicenseInner::is_active() const {
   return is_active_;
 }
 
-void StoreAppLicense::set_is_active(bool value_arg) {
+void StoreAppLicenseInner::set_is_active(bool value_arg) {
   is_active_ = value_arg;
 }
 
 
-bool StoreAppLicense::is_trial() const {
+bool StoreAppLicenseInner::is_trial() const {
   return is_trial_;
 }
 
-void StoreAppLicense::set_is_trial(bool value_arg) {
+void StoreAppLicenseInner::set_is_trial(bool value_arg) {
   is_trial_ = value_arg;
 }
 
 
-const std::string& StoreAppLicense::sku_store_id() const {
+const std::string& StoreAppLicenseInner::sku_store_id() const {
   return sku_store_id_;
 }
 
-void StoreAppLicense::set_sku_store_id(std::string_view value_arg) {
+void StoreAppLicenseInner::set_sku_store_id(std::string_view value_arg) {
   sku_store_id_ = value_arg;
 }
 
 
-const std::string& StoreAppLicense::trial_unique_id() const {
+const std::string& StoreAppLicenseInner::trial_unique_id() const {
   return trial_unique_id_;
 }
 
-void StoreAppLicense::set_trial_unique_id(std::string_view value_arg) {
+void StoreAppLicenseInner::set_trial_unique_id(std::string_view value_arg) {
   trial_unique_id_ = value_arg;
 }
 
 
-int64_t StoreAppLicense::trial_time_remaining() const {
+int64_t StoreAppLicenseInner::trial_time_remaining() const {
   return trial_time_remaining_;
 }
 
-void StoreAppLicense::set_trial_time_remaining(int64_t value_arg) {
+void StoreAppLicenseInner::set_trial_time_remaining(int64_t value_arg) {
   trial_time_remaining_ = value_arg;
 }
 
 
-EncodableList StoreAppLicense::ToEncodableList() const {
+EncodableList StoreAppLicenseInner::ToEncodableList() const {
   EncodableList list;
   list.reserve(5);
   list.push_back(EncodableValue(is_active_));
@@ -91,8 +91,8 @@ EncodableList StoreAppLicense::ToEncodableList() const {
   return list;
 }
 
-StoreAppLicense StoreAppLicense::FromEncodableList(const EncodableList& list) {
-  StoreAppLicense decoded(
+StoreAppLicenseInner StoreAppLicenseInner::FromEncodableList(const EncodableList& list) {
+  StoreAppLicenseInner decoded(
     std::get<bool>(list[0]),
     std::get<bool>(list[1]),
     std::get<std::string>(list[2]),
@@ -109,7 +109,7 @@ EncodableValue WindowsStoreApiCodecSerializer::ReadValueOfType(
   flutter::ByteStreamReader* stream) const {
   switch (type) {
     case 128:
-      return CustomEncodableValue(StoreAppLicense::FromEncodableList(std::get<EncodableList>(ReadValue(stream))));
+      return CustomEncodableValue(StoreAppLicenseInner::FromEncodableList(std::get<EncodableList>(ReadValue(stream))));
     default:
       return flutter::StandardCodecSerializer::ReadValueOfType(type, stream);
   }
@@ -119,9 +119,9 @@ void WindowsStoreApiCodecSerializer::WriteValue(
   const EncodableValue& value,
   flutter::ByteStreamWriter* stream) const {
   if (const CustomEncodableValue* custom_value = std::get_if<CustomEncodableValue>(&value)) {
-    if (custom_value->type() == typeid(StoreAppLicense)) {
+    if (custom_value->type() == typeid(StoreAppLicenseInner)) {
       stream->WriteByte(128);
-      WriteValue(EncodableValue(std::any_cast<StoreAppLicense>(*custom_value).ToEncodableList()), stream);
+      WriteValue(EncodableValue(std::any_cast<StoreAppLicenseInner>(*custom_value).ToEncodableList()), stream);
       return;
     }
   }
@@ -142,7 +142,7 @@ void WindowsStoreApi::SetUp(
     if (api != nullptr) {
       channel->SetMessageHandler([api](const EncodableValue& message, const flutter::MessageReply<EncodableValue>& reply) {
         try {
-          api->GetAppLicenseAsync([reply](ErrorOr<StoreAppLicense>&& output) {
+          api->GetAppLicenseAsync([reply](ErrorOr<StoreAppLicenseInner>&& output) {
             if (output.has_error()) {
               reply(WrapError(output.error()));
               return;

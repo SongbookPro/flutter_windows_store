@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'dart:async';
 
-import 'package:flutter/services.dart';
 import 'package:windows_store/windows_store.dart';
 
 void main() {
@@ -17,6 +16,7 @@ class MyApp extends StatefulWidget {
 
 class _MyAppState extends State<MyApp> {
   final _windowsStorePlugin = WindowsStoreApi();
+  StoreAppLicense? license;
 
   @override
   void initState() {
@@ -27,10 +27,9 @@ class _MyAppState extends State<MyApp> {
   // Platform messages are asynchronous, so we initialize in an async method.
   Future<void> initPlatformState() async {
     final result = await _windowsStorePlugin.getAppLicenseAsync();
-    print("active = ${result.isActive}");
-    print("trial = ${result.isTrial}");
-    print("trialRemaining = ${result.trialTimeRemaining}");
-    print("sku = ${result.skuStoreId}");
+    setState(() {
+      license = result;
+    });
   }
 
   @override
@@ -41,7 +40,15 @@ class _MyAppState extends State<MyApp> {
           title: const Text('Plugin example app'),
         ),
         body: Center(
-          child: Text('Running on'),
+          child: Column(
+            children: [
+              Text('isActive = ${license?.isActive}'),
+              Text('isTrial = ${license?.isActive}'),
+              Text('skuStoreId = ${license?.skuStoreId}'),
+              Text('trialUniqueId = ${license?.trialUniqueId}'),
+              Text('trialTimeRemaining = ${license?.trialTimeRemaining}'),
+            ],
+          ),
         ),
       ),
     );

@@ -1,3 +1,4 @@
+// ignore: depend_on_referenced_packages
 import 'package:pigeon/pigeon.dart';
 
 @ConfigurePigeon(PigeonOptions(
@@ -8,18 +9,18 @@ import 'package:pigeon/pigeon.dart';
   cppSourceOut: 'windows/pigeon/messages.g.cpp',
   dartPackageName: 'windows_store',
 ))
-class StoreAppLicense {
+class StoreAppLicenseInner {
   final bool isActive;
   final bool isTrial;
   final String skuStoreId;
   final String trialUniqueId;
   final int trialTimeRemaining;
 
-  const StoreAppLicense(this.isActive, this.isTrial, this.skuStoreId, this.trialUniqueId, this.trialTimeRemaining);
+  const StoreAppLicenseInner(this.isActive, this.isTrial, this.skuStoreId, this.trialUniqueId, this.trialTimeRemaining);
 }
 
 @HostApi()
 abstract class WindowsStoreApi {
   @async
-  StoreAppLicense getAppLicenseAsync();
+  StoreAppLicenseInner getAppLicenseAsync();
 }
