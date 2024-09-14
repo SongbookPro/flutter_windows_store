@@ -31,10 +31,8 @@ if (NOT NUGET)
     set(NUGET ${nuget_SOURCE_DIR}/nuget.exe)
 endif()
 
-exec_program(${NUGET}
-    ARGS install "Microsoft.Windows.CppWinRT" -Version 2.0.230706.1 -ExcludeVersion -OutputDirectory ${CMAKE_BINARY_DIR}/packages)
-# exec_program(${NUGET}
-#     ARGS install "Microsoft.Toolkit.Uwp.Notifications" -Version 7.1.3 -ExcludeVersion -OutputDirectory ${CMAKE_BINARY_DIR}/packages)
+execute_process(COMMAND ${NUGET}
+    install "Microsoft.Windows.CppWinRT" -Version 2.0.230706.1 -ExcludeVersion -OutputDirectory ${CMAKE_BINARY_DIR}/packages)
 ################ NuGet install end ################
 
 # Any new source files that you add to the plugin should be added here.
@@ -90,45 +88,3 @@ set(windows_store_bundled_libraries
   ""
   PARENT_SCOPE
 )
-
-# === Tests ===
-# These unit tests can be run from a terminal after building the example, or
-# from Visual Studio after opening the generated solution file.
-
-# Only enable test builds when building the example (which sets this variable)
-# so that plugin clients aren't building the tests.
-if (${include_${PROJECT_NAME}_tests})
-set(TEST_RUNNER "${PROJECT_NAME}_test")
-enable_testing()
-
-# Add the Google Test dependency.
-include(FetchContent)
-FetchContent_Declare(
-  googletest
-  URL https://github.com/google/googletest/archive/release-1.11.0.zip
-)
-# Prevent overriding the parent project's compiler/linker settings
-set(gtest_force_shared_crt ON CACHE BOOL "" FORCE)
-# Disable install commands for gtest so it doesn't end up in the bundle.
-set(INSTALL_GTEST OFF CACHE BOOL "Disable installation of googletest" FORCE)
-FetchContent_MakeAvailable(googletest)
-
-# The plugin's C API is not very useful for unit testing, so build the sources
-# directly into the test binary rather than using the DLL.
-add_executable(${TEST_RUNNER}
-  ${PLUGIN_SOURCES}
-)
-apply_standard_settings(${TEST_RUNNER})
-target_include_directories(${TEST_RUNNER} PRIVATE "${CMAKE_CURRENT_SOURCE_DIR}")
-target_link_libraries(${TEST_RUNNER} PRIVATE flutter_wrapper_plugin)
-target_link_libraries(${TEST_RUNNER} PRIVATE gtest_main gmock)
-# flutter_wrapper_plugin has link dependencies on the Flutter DLL.
-add_custom_command(TARGET ${TEST_RUNNER} POST_BUILD
-  COMMAND ${CMAKE_COMMAND} -E copy_if_different
-  "${FLUTTER_LIBRARY}" $<TARGET_FILE_DIR:${TEST_RUNNER}>
-)
-
-# Enable automatic test discovery.
-include(GoogleTest)
-gtest_discover_tests(${TEST_RUNNER})
-endif()
