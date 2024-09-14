@@ -16,7 +16,13 @@ class StoreAppLicenseInner {
   final String trialUniqueId;
   final int trialTimeRemaining;
 
-  const StoreAppLicenseInner(this.isActive, this.isTrial, this.skuStoreId, this.trialUniqueId, this.trialTimeRemaining);
+  const StoreAppLicenseInner(
+    this.isActive,
+    this.isTrial,
+    this.skuStoreId,
+    this.trialUniqueId,
+    this.trialTimeRemaining,
+  );
 }
 
 @HostApi()

@@ -1,4 +1,3 @@
-// export "src/messages.g.dart";
 import "src/messages.g.dart" as inner;
 
 class StoreAppLicense {
