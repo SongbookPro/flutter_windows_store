@@ -1,0 +1,14 @@
+name: Test
+
+on: pull_request
+
+jobs:
+  pub_scores:
+    name: Pub.dev scores
+    uses: VeryGoodOpenSource/very_good_workflows/.github/workflows/pana.yml@v1
+    with:
+      min_score: 160
+
+  semantic_pull_request:
+    name: Conventional commit checks
+    uses: VeryGoodOpenSource/very_good_workflows/.github/workflows/semantic_pull_request.yml@v1
